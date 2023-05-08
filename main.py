@@ -1,21 +1,20 @@
 import pandas as pd
 import plotly.express as px
 import streamlit as st
+from streamlit.components.v1 import html
 import base64
 from io import BytesIO
 
 
 
 # Define a function to generate the PDF report
-def download_link(df, filename):
+def to_excel(df):
     output = BytesIO()
     writer = pd.ExcelWriter(output, engine='openpyxl')
     df.to_excel(writer, index=False)
     writer.close()
-    xlsx_data = output.getvalue()
-    b64 = base64.b64encode(xlsx_data).decode()
-    href = f'<a href="data:application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;base64,{b64}" download="{filename}">Download {filename} File</a>'
-    return href
+    return output.getvalue()
+
 
 st.set_page_config(page_title="Paychex Data",
                    page_icon=":bar_chart:",
@@ -94,5 +93,11 @@ if uploaded_files:
             st.write(df_grouped)
             filename = f"QB Recap {check_date}.xlsx"  # create filename using check date
             df_grouped.to_excel(filename) # save dataframe to excel file with the created filename
-            st.markdown(download_link(df_grouped, filename), unsafe_allow_html=True)
+            button_id = "download excel"
+            if st.button('Download Excel File',key= button_id):
+                excel_file = to_excel(df_grouped)
+                b64 = base64.b64encode(excel_file).decode()
+                href = f'<a href="data:application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;base64,{b64}" download="{filename}">Download {filename} File</a>'
+                html(href, height=0)
+
 
