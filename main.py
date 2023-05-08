@@ -5,6 +5,7 @@ import weasyprint
 import base64
 
 
+
 # Define a function to generate the PDF report
 def generate_pdf_report(df, salary, deductions, projects, check_date):
     df = df[df['Check Date'] == check_date]  # filter data by check_date
