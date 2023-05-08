@@ -1,34 +1,10 @@
 import pandas as pd
 import plotly.express as px
 import streamlit as st
-import weasyprint
-import base64
 
 
 
 # Define a function to generate the PDF report
-def generate_pdf_report(df, salary, deductions, projects, check_date):
-    df = df[df['Check Date'] == check_date]  # filter data by check_date
-    job_name = ', '.join(df['Job Name'].unique())
-    last_name = ', '.join(df['Last Name and Suffix'].unique())
-    df = df.fillna(0)  # replace NaN values with 0
-    html = f"<h1>Paychex Report ({check_date})</h1><p>Salary: {salary}</p><p>Deductions: {deductions}</p><p>Projects: {projects}</p><p>Employees: {last_name}</p>"
-    html += "<table style='border-collapse: collapse; font-size: 12px;'>"
-    html += "<tr style='background-color: #f2f2f2;'>"
-    for col in df.columns:
-        html += f"<th style='border: 1px solid black; padding: 5px;'>{col}</th>"
-    html += "</tr>"
-    for i, row in df.iterrows():
-        html += "<tr style='border: 1px solid black; page-break-inside: avoid;'>"
-        for val in row:
-            html += f"<td style='border: 1px solid black; padding: 5px;'>{val}</td>"
-        html += "</tr>"
-    html += "</table>"
-    report_pdf = weasyprint.HTML(string=html).write_pdf()
-    b64 = base64.b64encode(report_pdf).decode()
-    href = f'<a href="data:application/pdf;base64,{b64}" download="paychex_report_{check_date}.pdf">Download PDF Report ({check_date})</a>'
-    return href
-
 
 st.set_page_config(page_title="Paychex Data",
                    page_icon=":bar_chart:",
