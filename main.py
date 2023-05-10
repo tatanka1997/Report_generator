@@ -87,7 +87,7 @@ if uploaded_files:
                 {'Earning Amount': 'sum', 'Reimbursement-Other Payment Amount': 'sum', 'Withholding-Deduction Amt': 'sum', 'Child Support/401k': 'sum','Combined Company and Employee Tax Amount':'sum', 'Other Ded': 'sum'})
             df_grouped['Salary'] = df_grouped['Earning Amount'] + df_grouped['Reimbursement-Other Payment Amount'] - df_grouped['Other Ded']
             df_grouped['Tax'] = df_grouped['Combined Company and Employee Tax Amount'] - df_grouped['Withholding-Deduction Amt'] + df_grouped['Other Ded'] + df_grouped['Child Support/401k']
-            df_grouped = df_grouped.drop(['Earning Amount', 'Reimbursement-Other Payment Amount','Withholding-Deduction Amt','Child Support/401k','Combined Company and Employee Tax Amount','Other Ded'], axis=1)
+            df_grouped = df_grouped.drop(['Earning Amount', 'Reimbursement-Other Payment Amount','Withholding-Deduction Amt','Child Support/401k','Combined Company and Employee Tax Amount','Other Ded'], axis=1).reset_index()
             salary_total = df_grouped['Salary'].sum()
             tax_total = df_grouped['Tax'].sum()
             df_grouped.loc['Total'] = pd.Series({'Salary': salary_total, 'Tax': tax_total})
